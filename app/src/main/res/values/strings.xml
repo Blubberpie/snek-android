@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Snek</string>
+    <string name="up_button">Up Button</string>
+    <string name="down_button">Down Button</string>
+    <string name="left_button">Left Button</string>
+    <string name="right_button">Right Button</string>
+</resources>
