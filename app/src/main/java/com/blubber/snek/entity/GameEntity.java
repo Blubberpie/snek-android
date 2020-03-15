@@ -14,6 +14,7 @@ public abstract class GameEntity {
     public int getXPos() { return xPos; }
     public int getYPos() { return yPos; }
     public int getColor() { return color; }
+
     public void setXPos(int xPos) { this.xPos = xPos; }
     public void setYPos(int yPos) { this.yPos = yPos;}
     public void setColor(int color) { this.color = color; }
