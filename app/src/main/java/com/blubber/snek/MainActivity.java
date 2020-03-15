@@ -3,7 +3,8 @@ package com.blubber.snek;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.ImageView;
+
+import com.blubber.snek.enums.ColorPalette;
 
 public class MainActivity extends AppCompatActivity{
 

@@ -1,4 +1,4 @@
-package com.blubber.snek;
+package com.blubber.snek.enums;
 
 import android.graphics.Color;
 
