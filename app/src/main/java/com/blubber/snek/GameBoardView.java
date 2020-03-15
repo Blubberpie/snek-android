@@ -5,10 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.blubber.snek.entity.Apple;
+import com.blubber.snek.entity.EntityDirection;
 import com.blubber.snek.entity.GameEntity;
 import com.blubber.snek.entity.Snake;
 import com.blubber.snek.enums.ColorPalette;
@@ -37,11 +39,10 @@ public class GameBoardView extends AppCompatImageView {
     public GameBoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.CELL_COUNT_X = 10;
-        this.CELL_COUNT_Y = 10;
+        this.CELL_COUNT_Y = 11;
         this.snakeLen = 3;
         this.MAX_APPLE_COUNT = 1;
         this.apples = new HashSet<>();
-
         this.board = new GameEntity[CELL_COUNT_X][CELL_COUNT_Y];
         initBoard();
     }
@@ -66,6 +67,8 @@ public class GameBoardView extends AppCompatImageView {
             for (Apple a : this.apples){
                 drawEntity(canvas, a);
             }
+
+            drawEntity(canvas, snakeHead);
         }
     }
 
@@ -74,6 +77,42 @@ public class GameBoardView extends AppCompatImageView {
         int actualXPos = BOARD_START_X + ((entity.getXPos()) * CELL_SIZE);
         int actualYPos = BOARD_START_Y + ((entity.getYPos()) * CELL_SIZE);
         canvas.drawRect(actualXPos, actualYPos, actualXPos + CELL_SIZE, actualYPos + CELL_SIZE, this.paint);
+    }
+
+    public void changeSnakeDirection(EntityDirection entityDirection){
+        this.snakeHead.setDirection(entityDirection);
+    }
+
+    public void move(){
+        int initialX = this.snakeHead.getXPos();
+        int initialY = this.snakeHead.getYPos();
+        EntityDirection snakeDir = this.snakeHead.getDirection();
+        switch(snakeDir){
+            case UP:
+                if (initialY - 1 < 0){ this.snakeHead.setYPos(board[0].length - 1); }
+                else this.snakeHead.setYPos(initialY - 1);
+                break;
+            case DOWN:
+                if (initialY + 1 >= board[0].length){ snakeHead.setYPos(0); }
+                else this.snakeHead.setYPos(initialY + 1);
+                break;
+            case LEFT:
+                if (initialX - 1 < 0){ snakeHead.setXPos(board.length - 1); }
+                else snakeHead.setXPos(initialX - 1);
+                break;
+            case RIGHT:
+                if(initialX + 1 >= board.length){ snakeHead.setXPos(0); }
+                else snakeHead.setXPos(initialX + 1);
+                break;
+            default:
+                break;
+        }
+        this.board[this.snakeHead.getXPos()][this.snakeHead.getYPos()] = snakeHead;
+        followHead(this.snakeHead);
+    }
+
+    private void followHead(Snake snakeHead){
+
     }
 
     private void spawnApple(){
@@ -93,6 +132,7 @@ public class GameBoardView extends AppCompatImageView {
 
     private void initSnake(){
         this.snakeHead = new Snake(0, 0);
+        changeSnakeDirection(EntityDirection.RIGHT);
         this.board[0][0] = this.snakeHead;
         Snake nextHead = this.snakeHead;
         for (int i=0; i<snakeLen -1; i++){

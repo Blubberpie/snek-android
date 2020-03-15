@@ -5,6 +5,7 @@ public abstract class GameEntity {
     private int xPos, yPos;
     private int color;
 
+
     public GameEntity(int xPos, int yPos){
         setXPos(xPos);
         setYPos(yPos);
