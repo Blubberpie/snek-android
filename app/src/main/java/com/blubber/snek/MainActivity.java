@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private class DPadListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            gameBoardView.changeSnakeDirection(Objects.requireNonNull(buttonDirectionMap.get((ImageView) v)));
+            gameBoardView.queueSnakeDirection(Objects.requireNonNull(buttonDirectionMap.get((ImageView) v)));
         }
     }
 }

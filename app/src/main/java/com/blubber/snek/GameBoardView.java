@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -41,6 +42,7 @@ public class GameBoardView extends AppCompatImageView {
     private boolean gameOver = false;
     private Board board;
     private int delay = 500;
+    private EntityDirection queuedDirection = EntityDirection.RIGHT;
 
     public GameBoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,6 +56,7 @@ public class GameBoardView extends AppCompatImageView {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
+            changeSnakeDirection(queuedDirection);
             move();
             invalidate();
         }
@@ -125,7 +128,11 @@ public class GameBoardView extends AppCompatImageView {
         }
     }
 
-    public void changeSnakeDirection(EntityDirection entityDirection){
+    public void queueSnakeDirection(EntityDirection entityDirection){
+        this.queuedDirection = entityDirection;
+    }
+
+    private void changeSnakeDirection(EntityDirection entityDirection){
         if(this.snakeHead.getDirection().opposite().compareTo(entityDirection.toString()) != 0 || this.snakeHead.getDirection().compareTo(entityDirection) == 0){
             this.snakeHead.setDirection(entityDirection);
         }
@@ -207,9 +214,11 @@ public class GameBoardView extends AppCompatImageView {
         if(gameOver) {
             this.paint.setColor(Color.RED);
             drawBoard(canvas);
+            handler.removeCallbacks(runnable);
         } else if(checkAllCellsFilled()){
             this.paint.setColor(GameColor.PEACH.getRgb());
             drawBoard(canvas);
+            handler.removeCallbacks(runnable);
         } else {
             drawApples(canvas);
             drawSnake(canvas);
