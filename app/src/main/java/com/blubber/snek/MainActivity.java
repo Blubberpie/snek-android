@@ -11,6 +11,7 @@ import com.blubber.snek.enums.GameColor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private class DPadListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            gameBoardView.changeSnakeDirection(buttonDirectionMap.get((ImageView) v));
-            gameBoardView.move();
-            gameBoardView.invalidate();
+            gameBoardView.changeSnakeDirection(Objects.requireNonNull(buttonDirectionMap.get((ImageView) v)));
         }
     }
 }
